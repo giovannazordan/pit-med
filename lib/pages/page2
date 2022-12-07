@@ -1,0 +1,72 @@
+import 'package:flutter/material.dart';
+import 'package:pitmed/imp/expandableK.dart';
+import 'package:pitmed/imp/sist.dart';
+import 'package:pitmed/imp/textos/textos.dart';
+import 'package:pitmed/card.dart';
+
+class SecondTwo extends StatefulWidget {
+  final value;
+  const PageTwo({super.key, required this.value});
+
+  @override
+  State<PageTwo> createState() => _PageTwoState();
+}
+
+class _PageTwoState extends State<PageTwo> {
+  ExpandableK expandable = ExpandableK();
+  @override
+  initState() {
+    Textos textos = Textos();
+
+    expandable.adicionarSistema(Sistema('Doença Celíaca',textos.doencaCeliaca,'images/sistemas/digestivo/doencaCeliaca/doenca_celiaca.jpg','Digestivo'));
+    expandable.adicionarSistema(Sistema('Pancreatite',textos.pancreatite,'images/sistemas/digestivo/pancreatite/pancreatite.jpg','Digestivo'));
+    expandable.adicionarSistema(Sistema('Gastrite', textos.gastrite,'images/sistemas/digestivo/gastrite/gastrite.jpeg', 'Digestivo'));
+    expandable.adicionarSistema(Sistema('Hipertireoidismo', textos.hipertireoidismo,'images/sistemas/endocrino/hipertireoidismo/hipertireoidismo.png', 'Endócrino'));
+    expandable.adicionarSistema(Sistema('Hipotireoidismo',textos.hipotireoidismo,'images/sistemas/endocrino/hipotireoidismo/hipotireoidismo.png','Endócrino'));
+    expandable.adicionarSistema(Sistema('Acromegalia',textos.acromegalia,'images/sistemas/endocrino/acromegalia/acromegalia.jpeg','Endócrino'));
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: const Colors.pink,
+          centerTitle: true,
+          title: const Text('App Health'),
+        ),
+        body: Container(
+          color: const Colors.pink,
+          child: Stack(
+            children: [
+              const Center(
+                child: Image(image: AssetImage('assets/logo.jpeg')),
+              ),
+              SizedBox(
+                  child: Center(
+                    child: SizedBox(
+                      height: 500,
+                      width: MediaQuery.of(context).size.width - 30,
+                      child: ListView.builder(
+                          itemCount: expandable.sistemas.length,
+                          itemBuilder: (BuildContext ctxt, int index) {
+                            if (expandable.sistemas[index].codigo ==
+                                widget.value) {
+                              return MyCard(
+                                  title:
+                                      '  ${expandable.sistemas[index].title}',
+                                  text: '  ${expandable.sistemas[index].text}',
+                                  path: expandable.sistemas[index].path);
+                            }
+                            return const SizedBox();
+                          }
+                        ),
+                    ),
+                  )
+                )
+            ],
+          ),
+        )
+      );
+  }
+}

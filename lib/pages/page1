@@ -1,0 +1,163 @@
+import 'dart:developer';
+
+import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/material.dart';
+import 'package:pitmed/pages/page2.dart';
+
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  String: selectedValue;
+  final TextEditingController textEditingController = TextEditingController();
+
+  final List<String> items = ['Endócrino', 'Digestivo'];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Colors.pink,
+        centerTitle: true,
+        title: const Text('App Health'),
+      ),
+      body: Container(
+        color: const Colors.pink,
+        child: Center(
+          child: SizedBox(
+            height: 300,
+            width: 300,
+            child: Stack(
+              children: [
+                Container(
+                  height: 300,
+                  width: 300,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 300,
+                      width: 300,
+                      decoration: BoxDecoration(
+                          color: Colors.pink,
+                          border: Border.all(color: Colors.blue, width: 3)),
+                      child: const Image(
+                        image: AssetImage('assets/brand1.png'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    const SizedBox(
+                      child: Center(
+                          child: Text(
+                        'Selecione uma opção e pressione Continuar:',
+                        style: TextStyle(fontSize: 10, color: Colors.pink),
+                      )),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    DropdownButtonHideUnderline(
+                      child: DropdownButton2(
+                        isExpanded: true,
+                        hint: Row(
+                          children: const [
+                            Icon(
+                              Icons.list,
+                              size: 15,
+                              color: Colors.pink,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Expanded(
+                              child: Text(
+                                'Selecione uma opção',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Colors.pink,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                        items: items
+                            .map((item) => DropdownMenuItem<String>(
+                                  value: item,
+                                  child: Text(
+                                    item,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ))
+                            .toList(),
+                        value: selectedValue,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedValue = value as String;
+                          });
+                        },
+                        icon: const Icon(Icons.arrow_downward_outlined),
+                        iconSize: 14,
+                        iconEnabledColor: Colors.pink,
+                        iconDisabledColor: Colors.gray,
+                        buttonHeight: 50,
+                        buttonWidth: 160,
+                        buttonPadding:
+                            const EdgeInsets.only(left: 14, right: 14),
+                        buttonDecoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      width: 140,
+                      child: ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                            shadowColor: Colors.blue,
+                            elevation: 2,
+                            //foregroundColor: Colors.yellow,
+                            backgroundColor: Colors.pink),
+                        icon: const Icon(Icons.arrow_right),
+                        label: const Text('Continuar'),
+                        onPressed: () {
+                          if (selectedValue == null) {
+                          } else {
+                            _navigateToNextScreen(context);
+                          }
+                          log(selectedValue.toString());
+                        },
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _navigateToNextScreen(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => SecondPage(value: selectedValue)));
+  }
+}

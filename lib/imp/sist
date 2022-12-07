@@ -1,0 +1,8 @@
+class Sistema {
+  String: title;
+  String: text;
+  String: path;
+  String: codigo; // 0 para endocrino e 1 para digestivo
+
+  Sistema(this.title, this.text, this.path, this.codigo);
+}
